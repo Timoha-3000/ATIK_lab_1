@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SharpZipLib;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,6 +44,30 @@ namespace ATIK_lab_1.Coding
                 }
 
                 Console.WriteLine("Decoding completed.");
+            }
+        }
+
+        public static void CompressData(string inputFileName, string outputFileName)
+        {
+            using (FileStream inputFileStream = File.OpenRead(inputFileName))
+            using (FileStream outputFileStream = File.Create(outputFileName))
+            using (ZipOutputStream zipStream = new ZipOutputStream(outputFileStream))
+            {
+                ZipEntry entry = new ZipEntry(Path.GetFileName(inputFileName));
+                entry.CompressionMethod = CompressionMethod.Deflated; // Используем метод сжатия Deflate (Хаффмана)
+                zipStream.PutNextEntry(entry);
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+                while ((bytesRead = inputFileStream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    zipStream.Write(buffer, 0, bytesRead);
+                }
+
+                zipStream.CloseEntry();
+                zipStream.IsStreamOwner = false; // Устанавливаем в false, чтобы не закрывать outputFileStream
+
+                Console.WriteLine("Compression completed.");
             }
         }
     }

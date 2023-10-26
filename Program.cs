@@ -16,8 +16,9 @@ class Program
     {
         while (true)
         {
+            string compressedFileName = "compressed.zip"; // Путь к создаваемому архиву ZIP
             int countArg = 3;
-            Console.WriteLine(" ВВедите режим работы программы (1 - кодировть, 0 - декодировать, 2 - выйти из программы)," +
+            Console.WriteLine(" ВВедите режим работы программы (1 - кодировть, 0 - декодировать, 3 - кодировать Хофманом, 2 - выйти из программы)," +
                 "\n имя файла который необходимо архивировать или деарзивировать имя файла в который" +
                 "\n будет произведены действия. Сигнатура: <mode> <input_file> <output_file>");
 
@@ -45,6 +46,8 @@ class Program
                 Encode.EncodeFile(inputFileName, outputFileName);
             else if (mode == "0")
                 Decode.DecodeFile(inputFileName, outputFileName);
+            else if (mode == "3")
+                Decode.CompressData(inputFileName, compressedFileName);
             else if (mode == "2")
                 return;
             else
